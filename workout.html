@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תוכנית אימונים מרוכזת - כוח, ריצה ושחייה</title>
+<style>
+  :root {
+    --bg-color: #0b0f19;
+    --card-bg: #151f32;
+    --card-hover: #1e2d4a;
+    --border-color: #243552;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --primary: #38bdf8;
+    --accent: #f35626;
+    --recovery-bg: #102a28;
+    --recovery-border: #14b8a6;
+  }
+
+  body { 
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, Arial, sans-serif; 
+    background-color: var(--bg-color); 
+    color: var(--text-main); 
+    padding: 20px; 
+    direction: rtl;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  h1 { 
+    color: var(--primary); 
+    text-align: center; 
+    font-size: 2rem;
+    margin-bottom: 30px;
+    font-weight: 800;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+
+  .grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); 
+    gap: 20px; 
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .card { 
+    background-color: var(--card-bg); 
+    border: 1px solid var(--border-color); 
+    border-radius: 12px; 
+    padding: 20px; 
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary);
+    background-color: var(--card-hover);
+  }
+
+  /* עיצוב ייחודי ליום מנוחה/התאוששות */
+  .card.recovery-day {
+    background-color: var(--recovery-bg);
+    border-color: var(--recovery-border);
+  }
+  .card.recovery-day:hover {
+    background-color: #143532;
+  }
+
+  .title { 
+    color: var(--accent); 
+    font-weight: 700; 
+    font-size: 1.25rem; 
+    border-bottom: 2px solid var(--border-color); 
+    padding-bottom: 10px; 
+    margin-bottom: 15px; 
+  }
+
+  table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-bottom: 15px; 
+  }
+
+  th { 
+    color: var(--primary); 
+    text-align: right; 
+    border-bottom: 1px solid var(--border-color); 
+    padding: 8px 4px; 
+    font-size: 0.9rem; 
+    font-weight: 600;
+  }
+
+  td { 
+    padding: 10px 4px; 
+    border-bottom: 1px solid rgba(36, 53, 82, 0.4); 
+    font-size: 0.9rem; 
+    color: var(--text-main);
+    vertical-align: middle;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* עיצוב שדות הטקסט של המשקלים */
+  .weight-input {
+    width: 60px;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--primary);
+    border-radius: 6px;
+    padding: 4px 6px;
+    font-size: 0.85rem;
+    text-align: center;
+    font-weight: bold;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .weight-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+  }
+
+  .cardio { 
+    background-color: rgba(56, 189, 248, 0.08); 
+    border-right: 4px solid var(--primary); 
+    padding: 12px; 
+    font-size: 0.9rem; 
+    border-radius: 4px; 
+    color: #e2e8f0;
+    margin-top: 10px;
+  }
+
+  .card.recovery-day .cardio {
+    background-color: rgba(20, 184, 166, 0.08);
+    border-right-color: var(--recovery-border);
+  }
+
+  .actions-container {
+    text-align: center;
+    margin: 40px auto;
+    max-width: 1400px;
+  }
+
+  .btn-reset {
+    background-color: #3b1818;
+    color: #ef4444;
+    border: 1px solid #7f1d1d;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background-color 0.2s, border-color 0.2s;
+  }
+
+  .btn-reset:hover {
+    background-color: #7f1d1d;
+    color: #fca5a5;
+    border-color: #b91c1c;
+  }
+
+  @media (max-width: 480px) {
+    body { padding: 10px; }
+    .grid { grid-template-columns: 1fr; }
+    .weight-input { width: 50px; }
+  }
+</style>
+</head>
+<body>
+
+  <h1>תוכנית אימונים מרוכזת: כוח, ריצה ושחייה</h1>
+  
+  <div class="grid">
+    <!-- יום 1 -->
+    <div class="card">
+      <div class="title">יום 1: Push + ריצת נפח</div>
+      <table>
+        <tr><th>תרגיל</th><th>סטים</th><th>חזרות</th><th>משקל</th></tr>
+        <tr><td>לחיצת חזה בשיפוע חיובי</td><td>2</td><td>6-8</td><td><input type="text" class="weight-input" id="d1_t1"></td></tr>
+        <tr><td>פרפר בכבלים / מכונה</td><td>2</td><td>8-10</td><td><input type="text" class="weight-input" id="d1_t2"></td></tr>
+        <tr><td>הרחקת זרועות לצדדים</td><td>2</td><td>10-12</td><td><input type="text" class="weight-input" id="d1_t3"></td></tr>
+        <tr><td>לחיצת כתפיים בישיבה</td><td>2</td><td>6-8</td><td><input type="text" class="weight-input" id="d1_t4"></td></tr>
+        <tr><td>פשטת מרפקים בכבלים</td><td>2</td><td>8-10</td><td><input type="text" class="weight-input" id="d1_t5"></td></tr>
+        <tr><td>פשטת מרפקים מעבר לראש</td><td>2</td><td>8-10</td><td><input type="text" class="weight-input" id="d1_t6"></td></tr>
+      </table>
+      <div class="cardio"><strong>ערב:</strong> ריצת נפח קלה (Zone 2) לפי סרגל המאמצים.</div>
+    </div>
+
+    <!-- יום 2 -->
+    <div class="card">
+      <div class="title">יום 2: Pull + שחייה בינונית</div>
+      <table>
+        <tr><th>תרגיל</th><th>סטים</th><th>חזרות</th><th>משקל</th></tr>
+        <tr><td>פולי עליון אחיזה רחבה</td><td>2</td><td>6-8</td><td><input type="text" class="weight-input" id="d2_t1"></td></tr>
+        <tr><td>חתירה בחזה נתמך / T-Bar</td><td>2</td><td>8-10</td><td><input type="text" class="weight-input" id="d2_t2"></td></tr>
+        <tr><td>פולי עליון צר / חתירה</td><td>2</td><td>8-10</td><td><input type="text" class="weight-input" id="d2_t3"></td></tr>
+        <tr><td>פרפר הפוך במכונה</td><td>2</td><td>10-12</td><td><input type="text" class="weight-input" id="d2_t4"></td></tr>
+        <tr><td>כפילת מרפקים בשיפוע</td><td>2</td><td>8-10</td><td><input type="text" class="weight-input" id="d2_t5"></td></tr>
+        <tr><td>כפילת מרפקים פטישים</td><td>2</td><td>8-10</td><td><input type="text" class="weight-input" id="d2_t6"></td></tr>
+      </table>
+      <div class="cardio"><strong>ערב:</strong> שחייה רגועה 1,200–1,500 מטר.</div>
+    </div>
+
+    <!-- יום 3 -->
+    <div class="card">
+      <div class="title">יום 3: Legs (רגליים עצימות)</div>
+      <table>
+        <tr><th>תרגיל</th><th>סטים</th><th>חזרות</th><th>משקל</th></tr>
+        <tr><td>לחיצת רגליים (Leg Press)</td><td>2</td><td>6-8</td><td><input type="text" class="weight-input" id="d3_t1"></td></tr>
+        <tr><td>פשטת ברכיים במכונה</td><td>2</td><td>8-10</td><td><input type="text" class="weight-input" id="d3_t2"></td></tr>
+        <tr><td>כפילת ברכיים בישיבה</td><td>2</td><td>8-10</td><td><input type="text" class="weight-input" id="d3_t3"></td></tr>
+        <tr><td>דדליפט רומני (RDL)</td><td>2</td><td>6-8</td><td><input type="text" class="weight-input" id="d3_t4"></td></tr>
+        <tr><td>קירוב ירכיים במכונה</td><td>2</td><td>10-12</td><td><input type="text" class="weight-input" id="d3_t5"></td></tr>
+        <tr><td>הרמת עקבים בעמידה</td><td>2</td><td>10-12</td><td><input type="text" class="weight-input" id="d3_t6"></td></tr>
+      </table>
+      <div class="cardio"><strong>כוח בלבד - ללא אירובי.</strong></div>
+    </div>
+
+    <!-- יום 4 -->
+    <div class="card recovery-day">
+      <div class="title" style="color: var(--recovery-border);">יום 4: מנוחה מכוח + שחייה</div>
+      <div class="cardio"><strong>שחייה קלה לשחרור:</strong> 1,000–1,200 מטר בקצב קל להזרמת דם והתאוששות.</div>
+    </div>
+
+    <!-- יום 5 -->
+    <div class="card">
+      <div class="title">יום 5: Upper + אינטרוולים</div>
+      <table>
+        <tr><th>תרגיל</th><th>סטים</th><th>חזרות</th><th>משקל</th></tr>
+        <tr><td>לחיצת חזה שטוחה</td><td>2</td><td>6-8</td><td><input type="text" class="weight-input" id="d5_t1"></td></tr>
+        <tr><td>פרפר בחזה במכונה</td><td>2</td><td>8-10</td><td><input type="text" class="weight-input" id="d5_t2"></td></tr>
+        <tr><td>חתירה אופקית בכבלים</td><td>2</td><td>8-10</td><td><input type="text" class="weight-input" id="d5_t3"></td></tr>
+        <tr><td>פולי עליון אחיזה ניטרלית</td><td>2</td><td>8-10</td><td><input type="text" class="weight-input" id="d5_t4"></td></tr>
+        <tr><td>הרחקת זרועות לצדדים</td><td>2</td><td>10-12</td><td><input type="text" class="weight-input" id="d5_t5"></td></tr>
+        <tr><td>פשטת + כפילת מרפקים</td><td>2+2</td><td>8-10</td><td><input type="text" class="weight-input" id="d5_t6"></td></tr>
+      </table>
+      <div class="cardio"><strong>ערב:</strong> אינטרוולים (חימום + 5-6 פעמים 800 מ' + שחרור).</div>
+    </div>
+
+    <!-- יום 6 -->
+    <div class="card">
+      <div class="title">יום 6: Lower (רגליים + בטן)</div>
+      <table>
+        <tr><th>תרגיל</th><th>סטים</th><th>חזרות</th><th>משקל</th></tr>
+        <tr><td>סקוואט / סקוואט האק</td><td>2</td><td>6-8</td><td><input type="text" class="weight-input" id="d6_t1"></td></tr>
+        <tr><td>פשטת ברכיים במכונה</td><td>2</td><td>8-10</td><td><input type="text" class="weight-input" id="d6_t2"></td></tr>
+        <tr><td>כפילת ברכיים בשכיבה</td><td>2</td><td>8-10</td><td><input type="text" class="weight-input" id="d6_t3"></td></tr>
+        <tr><td>מכרעים (Lunges)</td><td>2</td><td>8-10</td><td><input type="text" class="weight-input" id="d6_t4"></td></tr>
+        <tr><td>פשטת ירך / Hip Thrust</td><td>2</td><td>8-10</td><td><input type="text" class="weight-input" id="d6_t5"></td></tr>
+        <tr><td>כפילת גו בפולי עליון</td><td>2</td><td>10-12</td><td><input type="text" class="weight-input" id="d6_t6"></td></tr>
+      </table>
+      <div class="cardio"><strong>כוח בלבד - ללא אירובי.</strong></div>
+    </div>
+  </div>
+
+  <div class="actions-container">
+    <button class="btn-reset" onclick="resetWeights()">איפוס כל המשקלים</button>
+  </div>
+
+  <script>
+    // פונקציה לשמירת נתונים ב-Local Storage
+    function saveWeight(e) {
+      localStorage.setItem(e.target.id, e.target.value);
+    }
+
